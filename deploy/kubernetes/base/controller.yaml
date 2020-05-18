@@ -52,8 +52,9 @@ spec:
                   key: access_key
                   optional: true
           volumeMounts:
-            - name: socket-dir
-              mountPath: /var/lib/csi/sockets/pluginproxy/
+            - name: config-volume
+              mountPath: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+              subPath: ca-certificates.crt
           ports:
             - name: healthz
               containerPort: 9808
@@ -101,5 +102,6 @@ spec:
             - name: socket-dir
               mountPath: /csi
       volumes:
-        - name: socket-dir
-          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: aws-config
